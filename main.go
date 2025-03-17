@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"go_code/gin-vue-blog/core"
 	"go_code/gin-vue-blog/global"
 )
@@ -9,5 +8,11 @@ import (
 func main() {
 	//读取配置文件
 	core.InitConf()
-	fmt.Println(global.Config)
+	//初始化日志
+	global.Log = core.InitLogger()
+	global.Log.Warnln("111")
+	global.Log.Error("222")
+	global.Log.Infof("333")
+	//连接数据库
+	global.DB = core.Initgorm()
 }
