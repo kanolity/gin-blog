@@ -3,6 +3,7 @@ package main
 import (
 	"go_code/gin-vue-blog/core"
 	"go_code/gin-vue-blog/global"
+	"go_code/gin-vue-blog/router"
 )
 
 func main() {
@@ -10,9 +11,12 @@ func main() {
 	core.InitConf()
 	//初始化日志
 	global.Log = core.InitLogger()
-	global.Log.Warnln("111")
-	global.Log.Error("222")
-	global.Log.Infof("333")
 	//连接数据库
 	global.DB = core.Initgorm()
+
+	router := router.InitRouter()
+
+	addr := global.Config.System.Addr()
+	global.Log.Infof("gvb_server运行在:%s", addr)
+	router.Run(addr)
 }
