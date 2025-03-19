@@ -14,8 +14,8 @@ type Article struct {
 	CollectsCount int         `json:"collects_count"`                          // 收藏量
 	TagModels     []Tag       `gorm:"many2many:article_tag" json:"tag_models"` // 文章标签
 	CommentModel  []Comment   `gorm:"ForeignKey:ArticleID" json:"-"`           // 文章的评论列表
-	UserModel     User        `gorm:"foreignKey:AuthID" json:"-"`              // 文章作者
-	UserID        uint        `json:"auth_id"`                                 // 用户ID
+	UserModel     User        `gorm:"foreignKey:UserID" json:"-"`              // 文章作者
+	UserID        uint        `json:"user_id"`                                 // 用户ID
 	Category      string      `gorm:"size:20" json:"category"`                 // 文章分类
 	Source        string      `json:"source"`                                  // 文章来源
 	Link          string      `json:"link"`                                    // 文章来源链接

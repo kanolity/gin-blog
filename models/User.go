@@ -17,5 +17,5 @@ type User struct {
 	Role           ctype.Role       `gorm:"size:4;default:1" json:"role"`                                                  //权限
 	SignStatus     ctype.SignStatus `gorm:"default:1" json:"sign_status"`                                                  //注册来源
 	ArticleModels  []Article        `gorm:"foreignkey:UserID" json:"-"`                                                    //发布的文章列表
-	CollectsModels []Collects       `gorm:"many2many:user_collects;jonForeignKey:UserID;JoinReference:ArticleID" json:"-"` //收藏的文章列表
+	CollectsModels []Article        `gorm:"many2many:user_collects;jonForeignKey:UserID;JoinReference:ArticleID" json:"-"` //收藏的文章列表
 }
