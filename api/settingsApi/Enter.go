@@ -1,4 +1,4 @@
-package settings_api
+package settingsApi
 
 type SettingsApi struct {
 }

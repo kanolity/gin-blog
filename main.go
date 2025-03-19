@@ -14,9 +14,9 @@ func main() {
 	//连接数据库
 	global.DB = core.Initgorm()
 
-	router := router.InitRouter()
+	r := router.InitRouter()
 
 	addr := global.Config.System.Addr()
 	global.Log.Infof("gvb_server运行在:%s", addr)
-	router.Run(addr)
+	r.Run(addr)
 }
