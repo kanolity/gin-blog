@@ -1,21 +1,39 @@
 mysql:
-  host: 127.0.0.1
-  port: 3306
-  db: gvb_db
-  user: kanolity
-  password: 1234
-  log_level: dev
-
+    host: 127.0.0.1
+    port: 3306
+    db: gvb_db
+    user: kanolity
+    password: "1234"
+    log_level: dev
+    config: ""
 logger:
-  level: info
-  prefix: "[gvb]"
-  director: log
-  show_line: true
-  log_in_console: true
-
+    level: info
+    prefix: '[gvb]'
+    director: log
+    show_line: true
+    log_in_console: true
 system:
-  host: "0.0.0.0"
-  port: 8080
-  env: release
-
-site-info:
+    host: 0.0.0.0
+    port: 8080
+    env: release
+site_info:
+    create_at: "2025-3-19"
+    title: kanolity blog
+    email: 2211868427@qq.com
+    name: kanolity
+email:
+    host: smtp.qq.com
+    port: 465
+    user: xxx@qq.com
+    password: xxx
+    default_from_email: x
+    use_ssl: false
+    use_tls: false
+jwt:
+    secret: xxx
+    expires: 48
+    issuer: xx
+qq:
+    app_id: "xx"
+    key: xx
+    redirect: https:xx.com

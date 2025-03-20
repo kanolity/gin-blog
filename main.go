@@ -13,7 +13,7 @@ func main() {
 	//初始化日志
 	global.Log = core.InitLogger()
 	//连接数据库
-	global.DB = core.Initgorm()
+	global.DB = core.InitGorm()
 
 	//命令行参数绑定
 	option := flag.Parse()

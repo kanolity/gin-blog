@@ -5,6 +5,7 @@ import (
 	"go_code/gin-vue-blog/models"
 )
 
+// MakeMigration 表结构迁移
 func MakeMigration() {
 	var err error
 	global.DB.SetupJoinTable(&models.User{}, "CollectsModels", &models.UserCollects{})

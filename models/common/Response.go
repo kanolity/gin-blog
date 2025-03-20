@@ -33,7 +33,9 @@ func OKWithData(data any, c *gin.Context) {
 func OKWithMsg(msg string, c *gin.Context) {
 	Result(SUCCESS, map[string]any{}, msg, c)
 }
-
+func OKWithNothing(c *gin.Context) {
+	Result(SUCCESS, map[string]any{}, "成功", c)
+}
 func Fail(data interface{}, msg string, c *gin.Context) {
 	Result(ERROR, data, msg, c)
 }

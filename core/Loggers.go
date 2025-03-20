@@ -18,7 +18,6 @@ const (
 
 type LogFormatter struct{}
 
-// Format
 func (f *LogFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	//根据不同的level显示信息
 	var levelColor int
