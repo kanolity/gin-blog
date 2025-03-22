@@ -1,4 +1,4 @@
-package common
+package res
 
 type ErrorCode int
 

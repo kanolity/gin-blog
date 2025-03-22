@@ -1,4 +1,4 @@
-package common
+package res
 
 import (
 	"github.com/gin-gonic/gin"
@@ -9,6 +9,11 @@ type Resp struct {
 	Code int         `json:"code"`
 	Msg  string      `json:"msg"`
 	Data interface{} `json:"data"`
+}
+
+type ListResp[T any] struct {
+	Count int64 `json:"count"`
+	List  T     `json:"list"`
 }
 
 const (
@@ -27,21 +32,31 @@ func Result(code int, data interface{}, msg string, c *gin.Context) {
 func OK(data interface{}, msg string, c *gin.Context) {
 	Result(SUCCESS, data, msg, c)
 }
+
+func OKWithList(list any, count int64, c *gin.Context) {
+	OKWithData(ListResp[any]{Count: count, List: list}, c)
+}
+
 func OKWithData(data any, c *gin.Context) {
 	Result(SUCCESS, data, "成功", c)
 }
+
 func OKWithMsg(msg string, c *gin.Context) {
 	Result(SUCCESS, map[string]any{}, msg, c)
 }
+
 func OKWithNothing(c *gin.Context) {
 	Result(SUCCESS, map[string]any{}, "成功", c)
 }
+
 func Fail(data interface{}, msg string, c *gin.Context) {
 	Result(ERROR, data, msg, c)
 }
+
 func FailWithMsg(msg string, c *gin.Context) {
 	Result(ERROR, map[string]any{}, msg, c)
 }
+
 func FailWithCode(code ErrorCode, c *gin.Context) {
 	msg, ok := ErrorMap[code]
 	if ok {
