@@ -2,6 +2,7 @@ package res
 
 import (
 	"github.com/gin-gonic/gin"
+	"go_code/gin-vue-blog/utils"
 	"net/http"
 )
 
@@ -18,7 +19,7 @@ type ListResp[T any] struct {
 
 const (
 	SUCCESS = 0
-	ERROR   = -1
+	ERROR   = 7
 )
 
 func Result(code int, data interface{}, msg string, c *gin.Context) {
@@ -64,4 +65,9 @@ func FailWithCode(code ErrorCode, c *gin.Context) {
 		return
 	}
 	Result(ERROR, map[string]any{}, "未知错误", c)
+}
+
+func FailWithError(err error, obj any, c *gin.Context) {
+	msg := utils.GetValidMsg(err, obj)
+	FailWithMsg(msg, c)
 }

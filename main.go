@@ -2,10 +2,17 @@ package main
 
 import (
 	"go_code/gin-vue-blog/core"
+	_ "go_code/gin-vue-blog/docs"
 	"go_code/gin-vue-blog/flag"
 	"go_code/gin-vue-blog/global"
 	"go_code/gin-vue-blog/router"
 )
+
+// @title gvb_server API文档
+// @version 1.0
+// @description API文档
+// @host 127.0.0.1:8080
+// @BasePath /
 
 func main() {
 	//读取配置文件

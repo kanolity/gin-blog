@@ -5,5 +5,5 @@ type Ad struct {
 	Title  string `gorm:"size:32" json:"title"` //标题
 	Href   string ` json:"href"`                //跳转链接
 	Images string `json:"images"`               //图片
-	IsShow int    `json:"is_show"`              //是否展示
+	IsShow bool   `json:"is_show"`              //是否展示
 }

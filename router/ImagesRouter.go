@@ -6,6 +6,8 @@ import (
 
 func (router RouterGroup) ImagesRouter() {
 	imagesApi := api.ApiGroupApp.ImagesApi
-	router.POST("/image", imagesApi.ImageUploadView)
-	router.GET("/image", imagesApi.ImageListView)
+	router.POST("/images", imagesApi.ImageUploadView)
+	router.GET("/images", imagesApi.ImageListView)
+	router.DELETE("/images", imagesApi.ImageRemoveView)
+	router.PUT("/images", imagesApi.ImageUpdateView)
 }
