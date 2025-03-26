@@ -15,6 +15,13 @@ type FileUploadResponse struct {
 }
 
 // ImageUploadView 上传图片，返回图片url
+// @Tags         图片管理
+// @Summary      上传图片
+// @Description  上传图片
+// @Param images formData file  true "图片的参数"
+// @Router       /api/images [post]
+// @Produce json
+// @Success      200  {object}  res.Resp{data=[]FileUploadResponse}
 func (imagesApi *ImagesApi) ImageUploadView(c *gin.Context) {
 	form, err := c.MultipartForm()
 	if err != nil {

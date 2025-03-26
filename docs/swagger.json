@@ -182,6 +182,331 @@
                     }
                 }
             }
+        },
+        "/api/image_names": {
+            "get": {
+                "description": "图片名称列表",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "图片管理"
+                ],
+                "summary": "图片名称列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/res.Resp"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/imagesApi.ImageResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/images": {
+            "get": {
+                "description": "图片列表",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "图片管理"
+                ],
+                "summary": "图片列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "key",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "sort",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/res.Resp"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/res.ListResp-models_Banner"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "修改图片名称",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "图片管理"
+                ],
+                "summary": "修改图片名称",
+                "parameters": [
+                    {
+                        "description": "图片的部分参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/imagesApi.ImageUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/res.Resp"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "上传图片",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "图片管理"
+                ],
+                "summary": "上传图片",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "图片的参数",
+                        "name": "images",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/res.Resp"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/imagesApi.FileUploadResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "删除图片",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "图片管理"
+                ],
+                "summary": "删除图片",
+                "parameters": [
+                    {
+                        "description": "图片id列表",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.RemoveRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/res.Resp"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/settings/{name}": {
+            "get": {
+                "description": "展示某一项配置信息",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "设置管理"
+                ],
+                "summary": "展示某一项配置信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "设置名",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/res.Resp"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "修改某一项配置信息",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "设置管理"
+                ],
+                "summary": "修改某一项配置信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "配置信息类型，可选值：site、email、qq、jwt",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Site 配置信息",
+                        "name": "site",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/config.SiteInfo"
+                        }
+                    },
+                    {
+                        "description": "Email 配置信息",
+                        "name": "email",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/config.Email"
+                        }
+                    },
+                    {
+                        "description": "QQ 配置信息",
+                        "name": "qq",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/config.QQ"
+                        }
+                    },
+                    {
+                        "description": "Jwt 配置信息",
+                        "name": "jwt",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/config.Jwt"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/res.Resp"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -207,6 +532,141 @@
                 },
                 "title": {
                     "description": "标题",
+                    "type": "string"
+                }
+            }
+        },
+        "config.Email": {
+            "type": "object",
+            "properties": {
+                "default_from_email": {
+                    "description": "默认的发件人名字",
+                    "type": "string"
+                },
+                "host": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "port": {
+                    "type": "string"
+                },
+                "use_ssl": {
+                    "description": "是否用SSL",
+                    "type": "boolean"
+                },
+                "use_tls": {
+                    "description": "是否用Tls",
+                    "type": "boolean"
+                },
+                "user": {
+                    "description": "发件人邮箱",
+                    "type": "string"
+                }
+            }
+        },
+        "config.Jwt": {
+            "type": "object",
+            "properties": {
+                "expires": {
+                    "description": "过期时间",
+                    "type": "integer"
+                },
+                "issuer": {
+                    "description": "颁发人",
+                    "type": "string"
+                },
+                "secret": {
+                    "description": "密钥",
+                    "type": "string"
+                }
+            }
+        },
+        "config.QQ": {
+            "type": "object",
+            "properties": {
+                "app_id": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "redirect": {
+                    "type": "string"
+                }
+            }
+        },
+        "config.SiteInfo": {
+            "type": "object",
+            "properties": {
+                "create_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "ctype.ImageType": {
+            "type": "integer",
+            "enum": [
+                1,
+                2
+            ],
+            "x-enum-varnames": [
+                "Local",
+                "Cloud"
+            ]
+        },
+        "imagesApi.FileUploadResponse": {
+            "type": "object",
+            "properties": {
+                "file_name": {
+                    "description": "文件名",
+                    "type": "string"
+                },
+                "is_success": {
+                    "description": "是否上传成功",
+                    "type": "boolean"
+                },
+                "msg": {
+                    "description": "消息",
+                    "type": "string"
+                }
+            }
+        },
+        "imagesApi.ImageResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                }
+            }
+        },
+        "imagesApi.ImageUpdateRequest": {
+            "type": "object",
+            "required": [
+                "id",
+                "name"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
                     "type": "string"
                 }
             }
@@ -238,6 +698,37 @@
                 }
             }
         },
+        "models.Banner": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "hash": {
+                    "description": "图片的hash值，用于判断重复图片",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image_type": {
+                    "description": "图片存储位置",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/ctype.ImageType"
+                        }
+                    ]
+                },
+                "name": {
+                    "description": "图片名称",
+                    "type": "string"
+                },
+                "path": {
+                    "description": "图片路径",
+                    "type": "string"
+                }
+            }
+        },
         "models.RemoveRequest": {
             "type": "object",
             "properties": {
@@ -249,6 +740,21 @@
                 }
             }
         },
+        "res.ErrorCode": {
+            "type": "integer",
+            "enum": [
+                1001,
+                1002
+            ],
+            "x-enum-comments": {
+                "ArgumentError": "参数错误",
+                "SettingsError": "系统错误"
+            },
+            "x-enum-varnames": [
+                "SettingsError",
+                "ArgumentError"
+            ]
+        },
         "res.ListResp-models_Ad": {
             "type": "object",
             "properties": {
@@ -257,6 +763,17 @@
                 },
                 "list": {
                     "$ref": "#/definitions/models.Ad"
+                }
+            }
+        },
+        "res.ListResp-models_Banner": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "list": {
+                    "$ref": "#/definitions/models.Banner"
                 }
             }
         },

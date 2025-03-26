@@ -9,6 +9,19 @@ import (
 )
 
 // SettingsInfoUpdateView 修改某一项配置信息
+// @Tags         设置管理
+// @Summary      修改某一项配置信息
+// @Description  修改某一项配置信息
+// @Param name path string true "配置信息类型，可选值：site、email、qq、jwt"
+// @Param site body config.SiteInfo false "Site 配置信息"
+// @Param email body config.Email false "Email 配置信息"
+// @Param qq body config.QQ false "QQ 配置信息"
+// @Param jwt body config.Jwt false "Jwt 配置信息"
+// @Router       /api/settings/{name} [put]
+// @Produce json
+// @Success      200  {object}  res.Resp
+// @Failure      200  {object}  res.Resp{code=res.ErrorCode}
+// @Failure      200  {object}  res.Resp{data=string}
 func (settingsApi *SettingsApi) SettingsInfoUpdateView(c *gin.Context) {
 	var cr SettingsInfoUri
 	err := c.ShouldBindUri(&cr)

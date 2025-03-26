@@ -20,9 +20,11 @@ func InitRouter() *gin.Engine {
 
 	routerGroupApi := RouterGroup{apiRouterGroup}
 	//系统配置api
-	routerGroupApi.SettingApiRouter()
+	routerGroupApi.SettingRouter()
 	routerGroupApi.ImagesRouter()
 	routerGroupApi.AdRouter()
+	routerGroupApi.MenuRouter()
+	routerGroupApi.UserRouter()
 
 	return router
 }

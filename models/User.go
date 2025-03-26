@@ -5,9 +5,9 @@ import "go_code/gin-vue-blog/models/ctype"
 // User 用户表
 type User struct {
 	Model
-	Nickname       string           `gorm:"size:36" json:"nick_name"`                                                      //昵称
-	Username       string           `gorm:"size:36" json:"user_name"`                                                      //用户名
-	Password       string           `gorm:"size:255" json:"password"`                                                      //密码
+	Nickname       string           `gorm:"size:36" json:"nickname"`                                                       //昵称
+	Username       string           `gorm:"size:36" json:"username"`                                                       //用户名
+	Password       string           `gorm:"size:255" json:"-"`                                                             //密码
 	Avatar         string           `gorm:"size:255" json:"avatar"`                                                        //头像
 	Email          string           `gorm:"size:255" json:"email"`                                                         //邮箱
 	Phone          string           `gorm:"size:20" json:"phone"`                                                          //电话

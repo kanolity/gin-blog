@@ -11,6 +11,13 @@ type SettingsInfoUri struct {
 }
 
 // SettingsInfoView 展示某一项配置信息
+// @Tags         设置管理
+// @Summary      展示某一项配置信息
+// @Description  展示某一项配置信息
+// @Param name path string  true "设置名"
+// @Router       /api/settings/{name} [get]
+// @Produce json
+// @Success      200  {object}  res.Resp{data=string}
 func (settingsApi *SettingsApi) SettingsInfoView(c *gin.Context) {
 	var cr SettingsInfoUri
 	err := c.ShouldBindUri(&cr)

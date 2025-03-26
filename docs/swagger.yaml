@@ -19,6 +19,98 @@ definitions:
     - images
     - title
     type: object
+  config.Email:
+    properties:
+      default_from_email:
+        description: 默认的发件人名字
+        type: string
+      host:
+        type: string
+      password:
+        type: string
+      port:
+        type: string
+      use_ssl:
+        description: 是否用SSL
+        type: boolean
+      use_tls:
+        description: 是否用Tls
+        type: boolean
+      user:
+        description: 发件人邮箱
+        type: string
+    type: object
+  config.Jwt:
+    properties:
+      expires:
+        description: 过期时间
+        type: integer
+      issuer:
+        description: 颁发人
+        type: string
+      secret:
+        description: 密钥
+        type: string
+    type: object
+  config.QQ:
+    properties:
+      app_id:
+        type: string
+      key:
+        type: string
+      redirect:
+        type: string
+    type: object
+  config.SiteInfo:
+    properties:
+      create_at:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      title:
+        type: string
+    type: object
+  ctype.ImageType:
+    enum:
+    - 1
+    - 2
+    type: integer
+    x-enum-varnames:
+    - Local
+    - Cloud
+  imagesApi.FileUploadResponse:
+    properties:
+      file_name:
+        description: 文件名
+        type: string
+      is_success:
+        description: 是否上传成功
+        type: boolean
+      msg:
+        description: 消息
+        type: string
+    type: object
+  imagesApi.ImageResponse:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      path:
+        type: string
+    type: object
+  imagesApi.ImageUpdateRequest:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    required:
+    - id
+    - name
+    type: object
   models.Ad:
     properties:
       created_at:
@@ -38,6 +130,26 @@ definitions:
         description: 标题
         type: string
     type: object
+  models.Banner:
+    properties:
+      created_at:
+        type: string
+      hash:
+        description: 图片的hash值，用于判断重复图片
+        type: string
+      id:
+        type: integer
+      image_type:
+        allOf:
+        - $ref: '#/definitions/ctype.ImageType'
+        description: 图片存储位置
+      name:
+        description: 图片名称
+        type: string
+      path:
+        description: 图片路径
+        type: string
+    type: object
   models.RemoveRequest:
     properties:
       id_list:
@@ -45,12 +157,30 @@ definitions:
           type: integer
         type: array
     type: object
+  res.ErrorCode:
+    enum:
+    - 1001
+    - 1002
+    type: integer
+    x-enum-comments:
+      ArgumentError: 参数错误
+      SettingsError: 系统错误
+    x-enum-varnames:
+    - SettingsError
+    - ArgumentError
   res.ListResp-models_Ad:
     properties:
       count:
         type: integer
       list:
         $ref: '#/definitions/models.Ad'
+    type: object
+  res.ListResp-models_Banner:
+    properties:
+      count:
+        type: integer
+      list:
+        $ref: '#/definitions/models.Banner'
     type: object
   res.Resp:
     properties:
@@ -171,4 +301,195 @@ paths:
       summary: 更新广告
       tags:
       - 广告管理
+  /api/image_names:
+    get:
+      description: 图片名称列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Resp'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/imagesApi.ImageResponse'
+                  type: array
+              type: object
+      summary: 图片名称列表
+      tags:
+      - 图片管理
+  /api/images:
+    delete:
+      description: 删除图片
+      parameters:
+      - description: 图片id列表
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.RemoveRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Resp'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 删除图片
+      tags:
+      - 图片管理
+    get:
+      description: 图片列表
+      parameters:
+      - in: query
+        name: key
+        type: string
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: page
+        type: integer
+      - in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Resp'
+            - properties:
+                data:
+                  $ref: '#/definitions/res.ListResp-models_Banner'
+              type: object
+      summary: 图片列表
+      tags:
+      - 图片管理
+    post:
+      description: 上传图片
+      parameters:
+      - description: 图片的参数
+        in: formData
+        name: images
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Resp'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/imagesApi.FileUploadResponse'
+                  type: array
+              type: object
+      summary: 上传图片
+      tags:
+      - 图片管理
+    put:
+      description: 修改图片名称
+      parameters:
+      - description: 图片的部分参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/imagesApi.ImageUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Resp'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 修改图片名称
+      tags:
+      - 图片管理
+  /api/settings/{name}:
+    get:
+      description: 展示某一项配置信息
+      parameters:
+      - description: 设置名
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Resp'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 展示某一项配置信息
+      tags:
+      - 设置管理
+    put:
+      description: 修改某一项配置信息
+      parameters:
+      - description: 配置信息类型，可选值：site、email、qq、jwt
+        in: path
+        name: name
+        required: true
+        type: string
+      - description: Site 配置信息
+        in: body
+        name: site
+        schema:
+          $ref: '#/definitions/config.SiteInfo'
+      - description: Email 配置信息
+        in: body
+        name: email
+        schema:
+          $ref: '#/definitions/config.Email'
+      - description: QQ 配置信息
+        in: body
+        name: qq
+        schema:
+          $ref: '#/definitions/config.QQ'
+      - description: Jwt 配置信息
+        in: body
+        name: jwt
+        schema:
+          $ref: '#/definitions/config.Jwt'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Resp'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 修改某一项配置信息
+      tags:
+      - 设置管理
 swagger: "2.0"

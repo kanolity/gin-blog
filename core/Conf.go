@@ -25,7 +25,6 @@ func InitConf() {
 		log.Fatalf("config Init error: %v", err)
 	}
 	log.Println("config yamlFile load Init success")
-	log.Println(c)
 	global.Config = c
 }
 
