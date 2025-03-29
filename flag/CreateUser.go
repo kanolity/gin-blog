@@ -26,7 +26,7 @@ func CreateUser(permission string) {
 	fmt.Printf("请确认密码:")
 	fmt.Scan(&rePassword)
 	fmt.Printf("请输入邮箱:")
-	fmt.Scanln(&email)
+	fmt.Scan(&email)
 
 	//判断用户名是否存在
 	var userModel models.User
