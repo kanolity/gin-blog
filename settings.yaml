@@ -23,11 +23,11 @@ site_info:
     name: kanolity
 email:
     host: smtp.qq.com
-    port: "465"
-    user: xxx@qq.com
-    password: xxx
+    port: 465
+    user: 2211868427@qq.com
+    password: "zoakclqpplypdjae"
     default_from_email: x
-    use_ssl: false
+    use_ssl: true
     use_tls: false
 jwt:
     secret: xxx
@@ -43,5 +43,5 @@ upload:
 redis:
     ip: 127.0.0.1
     port: 6379
-    password: "redis"
+    password: ""
     pool_size: 100

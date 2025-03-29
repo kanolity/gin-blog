@@ -25,6 +25,7 @@ func ConnectRedisDB(db int) *redis.Client {
 	_, err := rdb.Ping().Result()
 	if err != nil {
 		logrus.Errorf("redis 连接失败:%s", redisConf.Addr())
+		logrus.Errorf("redis 连接失败:%v", err)
 	}
 	return rdb
 }
