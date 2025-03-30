@@ -25,7 +25,7 @@ func (userApi *UserApi) UserListView(c *gin.Context) {
 		PageInfo: page,
 		Debug:    false,
 	})
-	var users []models.User
+	users := make([]models.User, 0, len(list))
 	for _, user := range list {
 		if ctype.Role(claims.Role) != ctype.Admin {
 			//非管理员

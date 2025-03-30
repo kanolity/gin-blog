@@ -24,12 +24,19 @@ func (tagApi *TagApi) TagRemoveView(c *gin.Context) {
 		return
 	}
 
-	var tagList []models.Tag
-	count := global.DB.Model(&models.Tag{}).Find(&tagList, cr.IDList).RowsAffected
+	var count int64
+	global.DB.Model(&models.Tag{}).Where("id IN ?", cr.IDList).Count(&count)
 	if count == 0 {
 		res.FailWithMsg("标签不存在", c)
 		return
 	}
-	global.DB.Delete(&tagList)
+
+	err = global.DB.Where("id IN ?", cr.IDList).Delete(&models.Tag{}).Error
+	if err != nil {
+		global.Log.Error(err)
+		res.FailWithMsg("删除标签失败", c)
+		return
+	}
+
 	res.OKWithMsg(fmt.Sprintf("删除%d个标签", count), c)
 }

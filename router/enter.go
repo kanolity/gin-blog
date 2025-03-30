@@ -27,6 +27,7 @@ func InitRouter() *gin.Engine {
 	routerGroupApi.UserRouter()
 	routerGroupApi.TagRouter()
 	routerGroupApi.MessageRouter()
+	routerGroupApi.ArticleRouter()
 
 	return router
 }

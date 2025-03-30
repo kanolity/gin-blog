@@ -2,6 +2,7 @@ package api
 
 import (
 	"go_code/gin-vue-blog/api/adApi"
+	"go_code/gin-vue-blog/api/articleApi"
 	"go_code/gin-vue-blog/api/imagesApi"
 	"go_code/gin-vue-blog/api/menuApi"
 	"go_code/gin-vue-blog/api/messageApi"
@@ -18,6 +19,7 @@ type ApiGroup struct {
 	UserApi     userApi.UserApi
 	TagApi      tagApi.TagApi
 	MessageApi  messageApi.MessageApi
+	ArticleApi  articleApi.ArticleApi
 }
 
 var ApiGroupApp = new(ApiGroup)

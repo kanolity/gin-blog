@@ -1,4 +1,4 @@
-package menuApi
+package articleApi
 
 import (
 	"fmt"
@@ -9,7 +9,10 @@ import (
 	"gorm.io/gorm"
 )
 
-func (menuApi *MenuApi) MenuRemoveView(c *gin.Context) {
+//TODO 删除文章的所有评论和收藏其用户的收藏
+
+// ArticleRemoveAdminView 管理员批量删除文章
+func (articleApi *ArticleApi) ArticleRemoveAdminView(c *gin.Context) {
 	var cr models.RemoveRequest
 	err := c.ShouldBindJSON(&cr)
 	if err != nil {
@@ -18,15 +21,14 @@ func (menuApi *MenuApi) MenuRemoveView(c *gin.Context) {
 	}
 
 	var count int64
-	global.DB.Model(&models.Menu{}).Where("id IN ?", cr.IDList).Count(&count)
+	global.DB.Model(&models.Article{}).Where("id IN ? ", cr.IDList).Count(&count)
 	if count == 0 {
-		res.FailWithMsg("菜单不存在", c)
+		res.FailWithMsg("文章不存在", c)
 		return
 	}
 
-	//事务
 	err = global.DB.Transaction(func(tx *gorm.DB) error {
-		err = tx.Where("id IN ?", cr.IDList).Delete(&models.Menu{}).Error
+		err = tx.Where("id IN ?", cr.IDList).Delete(&models.Article{}).Error
 		if err != nil {
 			global.Log.Error(err)
 			return err
@@ -35,9 +37,8 @@ func (menuApi *MenuApi) MenuRemoveView(c *gin.Context) {
 	})
 	if err != nil {
 		global.Log.Error(err)
-		res.FailWithMsg("删除菜单失败", c)
+		res.FailWithMsg("删除文章失败", c)
 		return
 	}
-	res.OKWithMsg(fmt.Sprintf("删除%d个菜单", count), c)
-
+	res.OKWithMsg(fmt.Sprintf("删除%d个文章", count), c)
 }

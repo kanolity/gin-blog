@@ -14,6 +14,7 @@ func (menuApi *MenuApi) MenuUpdateView(c *gin.Context) {
 	if err != nil {
 		res.FailWithError(err, &cr, c)
 	}
+
 	id := c.Param("id")
 	var menuModel models.Menu
 	err = global.DB.Take(&menuModel, id).Error
@@ -21,7 +22,7 @@ func (menuApi *MenuApi) MenuUpdateView(c *gin.Context) {
 		res.FailWithMsg("菜单不存在", c)
 		return
 	}
-	global.DB.Model(&menuModel).Association("Banners").Clear()
+
 	if len(cr.ImageSortList) > 0 {
 		var bannerList []models.MenuBanner
 		for _, sort := range cr.ImageSortList {
