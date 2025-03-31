@@ -6,6 +6,7 @@ import (
 	"go_code/gin-vue-blog/models"
 	"go_code/gin-vue-blog/models/ctype"
 	"go_code/gin-vue-blog/models/res"
+	"gorm.io/gorm"
 )
 
 type ArticleDetailsResponse struct {
@@ -27,7 +28,21 @@ type ArticleDetailsResponse struct {
 func (articleApi *ArticleApi) ArticleDetailsView(c *gin.Context) {
 	id := c.Param("id")
 	var article models.Article
-	err := global.DB.Take(&article, "id=?", id).Error
+	err := global.DB.Transaction(func(tx *gorm.DB) error {
+		err := tx.Take(&article, id).Error
+		if err != nil {
+			global.Log.Error(err)
+			return err
+		}
+		err = tx.Model(&article).UpdateColumn("look_count", gorm.Expr("look_count+1")).Error
+		if err != nil {
+			global.Log.Error(err)
+			return err
+		}
+		article.LookCount += 1
+		return nil
+	})
+
 	if err != nil {
 		res.FailWithMsg("文章不存在", c)
 		return

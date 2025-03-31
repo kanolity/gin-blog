@@ -12,7 +12,7 @@ type Article struct {
 	CommentCount  int         `gorm:"default:0" json:"comment_count"`  // 评论数
 	DiggCount     int         `gorm:"default:0" json:"digg_count"`     // 点赞数
 	CollectsCount int         `gorm:"default:0" json:"collects_count"` // 收藏量
-	TagModels     []Tag       `gorm:"many2many:article_tag" json:"-"`  // 文章标签
+	TagModels     []Tag       `gorm:"many2many:article_tags" json:"-"` // 文章标签
 	CommentModel  []Comment   `gorm:"ForeignKey:ArticleID" json:"-"`   // 文章的评论列表
 	UserModel     User        `gorm:"foreignKey:UserID" json:"-"`      // 文章作者
 	UserID        uint        `json:"user_id"`                         // 用户ID

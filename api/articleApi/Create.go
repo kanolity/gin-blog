@@ -35,17 +35,10 @@ func (articleApi *ArticleApi) ArticleCreateView(c *gin.Context) {
 		return
 	}
 
-	// 防范 XSS: 对用户输入数据进行转义或过滤
-	cr.Title = html.EscapeString(cr.Title)
-	cr.Abstract = html.EscapeString(cr.Abstract)
-	cr.Content = html.EscapeString(cr.Content)
-	cr.Category = html.EscapeString(cr.Category)
-	cr.Source = html.EscapeString(cr.Source)
-	cr.Link = html.EscapeString(cr.Link)
-	for i, tag := range cr.Tags {
-		cr.Tags[i] = html.EscapeString(tag)
-	}
+	// 防范 XSS
+	sanitizeArticleInput(&cr)
 
+	var failTagList []string
 	//事务
 	err = global.DB.Transaction(func(tx *gorm.DB) error {
 		//查找用户和图片相关信息
@@ -58,7 +51,7 @@ func (articleApi *ArticleApi) ArticleCreateView(c *gin.Context) {
 		var existingArticle models.Article
 		err = tx.Where("title = ?", cr.Title).Take(&existingArticle).Error
 		if err == nil {
-			return fmt.Errorf("文章标题已存在，请更换标题")
+			return fmt.Errorf("文章标题重复，请更换标题")
 		} else if !errors.Is(err, gorm.ErrRecordNotFound) {
 			// 如果错误不是 ErrRecordNotFound，则表示查询出错
 			return err
@@ -85,24 +78,49 @@ func (articleApi *ArticleApi) ArticleCreateView(c *gin.Context) {
 		var tag models.Tag
 
 		//保存标签，建立关联关系
+		var articleTagList []models.ArticleTag
 		for _, tagTitle := range cr.Tags {
-			// 检查标签是否存在，不存在则创建
-			err = tx.FirstOrCreate(&tag, models.Tag{Title: tagTitle}).Error
-			if err != nil {
+			// 检查标签是否存在
+			err = tx.Take(&tag, models.Tag{Title: tagTitle}).Error
+			if err == nil {
+				articleTagList = append(articleTagList, models.ArticleTag{
+					ArticleID: article.ID,
+					TagID:     tag.ID,
+				})
+			} else if errors.Is(err, gorm.ErrRecordNotFound) {
+				failTagList = append(failTagList, tagTitle)
+				continue
+			} else {
 				return err
 			}
-			//关联标签和文章
-			err = tx.Model(&article).Association("TagModels").Append(&tag)
+			err = tx.Create(&articleTagList).Error
 			if err != nil {
 				return err
 			}
 		}
 		return nil
 	})
+
 	if err != nil {
 		global.Log.Error(err)
 		res.FailWithMsg(fmt.Sprintf("文章创建失败：%v", err), c)
 		return
 	}
+	if len(failTagList) > 0 {
+		res.OKWithMsg(fmt.Sprintf("文章创建成功，但以下标签未关联：%v", failTagList), c)
+		return
+	}
 	res.OKWithMsg("文章创建成功", c)
+}
+
+func sanitizeArticleInput(cr *ArticleRequest) {
+	cr.Title = html.EscapeString(cr.Title)
+	cr.Abstract = html.EscapeString(cr.Abstract)
+	cr.Content = html.EscapeString(cr.Content)
+	cr.Category = html.EscapeString(cr.Category)
+	cr.Source = html.EscapeString(cr.Source)
+	cr.Link = html.EscapeString(cr.Link)
+	for i, tag := range cr.Tags {
+		cr.Tags[i] = html.EscapeString(tag)
+	}
 }

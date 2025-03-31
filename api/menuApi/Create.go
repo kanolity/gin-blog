@@ -16,8 +16,8 @@ type ImageSort struct {
 type MenuRequest struct {
 	Title         string      `json:"title" binding:"required" msg:"请完善菜单名称" structs:"title"`
 	Path          string      `json:"path" binding:"required" msg:"请完善路径" structs:"path"`
-	Slogan        string      `json:"slogan" structs:"slogan"`
-	Abstract      ctype.Array `json:"abstract" structs:"abstract"`
+	Slogan        string      `json:"slogan" structs:"slogan"`                              //宣传标语
+	Abstract      ctype.Array `json:"abstract" structs:"abstract"`                          //简介
 	AbstractTime  int         `json:"abstract_time" structs:"abstract_time"`                //切换的时间,单位:s
 	BannerTime    int         `json:"banner_time" structs:"banner_time"`                    //切换的时间,单位:s
 	Sort          int         `json:"sort" binding:"required" msg:"请输入菜单序号" structs:"sort"` //菜单的序号
@@ -38,6 +38,7 @@ func (menuApi *MenuApi) MenuCreateView(c *gin.Context) {
 	err := c.ShouldBindJSON(&cr)
 	if err != nil {
 		res.FailWithError(err, &cr, c)
+		return
 	}
 
 	var menu models.Menu
