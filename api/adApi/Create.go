@@ -21,7 +21,9 @@ type AdRequest struct {
 // @Param  data body AdRequest true "表示多个参数"
 // @Router       /api/adverts [post]
 // @Produce json
-// @Success      200  {object}  res.Resp{}
+// @Success      200  {object}  res.Resp{data=string}
+// @Failure      200  {object}  res.Resp{data=string}
+// @Failure      200  {object}  res.Resp{data=string}
 func (adApi *AdApi) AdCreateView(c *gin.Context) {
 	var cr AdRequest
 	err := c.ShouldBindJSON(&cr)

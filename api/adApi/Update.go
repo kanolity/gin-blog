@@ -17,6 +17,9 @@ import (
 // @Router       /api/adverts/{id} [put]
 // @Produce json
 // @Success      200  {object}  res.Resp{data=string}
+// @Failure      200  {object}  res.Resp{data=string}
+// @Failure      200  {object}  res.Resp{data=string}
+// @Failure      200  {object}  res.Resp{data=string}
 func (adApi *AdApi) AdUpdateView(c *gin.Context) {
 	id := c.Param("id")
 	var cr AdRequest

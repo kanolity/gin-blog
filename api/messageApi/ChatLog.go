@@ -8,23 +8,15 @@ import (
 	"go_code/gin-vue-blog/utils/jwts"
 )
 
-type ChatLogRequest struct {
-	UserID uint `json:"user_id" binding:"required"` // 聊天人 ID
-}
-
 func (messageApi *MessageApi) ChatLogView(c *gin.Context) {
 	//获取用户ID
 	_claims, _ := c.Get("claims")
 	claims := _claims.(*jwts.CustomClaims)
 
-	var cr ChatLogRequest
-	err := c.ShouldBindJSON(&cr)
-	if err != nil {
-		res.FailWithError(err, &cr, c)
-		return
-	}
+	id := c.Query("id") //聊天人id
+
 	var msgList []models.Message
-	err = global.DB.Raw(`
+	err := global.DB.Raw(`
         SELECT t.*
         FROM messages t
         JOIN (
@@ -38,7 +30,7 @@ func (messageApi *MessageApi) ChatLogView(c *gin.Context) {
         ON LEAST(t.send_user_id, t.rev_user_id) = grouped.user1
            AND GREATEST(t.send_user_id, t.rev_user_id) = grouped.user2
         ORDER BY t.created_at DESC
-    `, claims.UserID, claims.UserID, cr.UserID, cr.UserID).Scan(&msgList).Error
+    `, claims.UserID, claims.UserID, id, id).Scan(&msgList).Error
 	if err != nil {
 		global.Log.Error(err)
 		res.FailWithMsg("消息列表出错", c)

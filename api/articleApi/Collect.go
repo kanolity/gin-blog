@@ -11,6 +11,16 @@ import (
 	"time"
 )
 
+// CollectArticleView 收藏文章
+// @Tags         文章管理
+// @Summary      收藏文章
+// @Description  收藏文章
+// @Param  data param uint true "收藏的文章id"
+// @Router       /api/articles/{id} [post]
+// @Produce json
+// @Success      200  {object}  res.Resp{data=string}
+// @Failure      200  {object}  res.Resp{data=string}
+// @Failure      200  {object}  res.Resp{data=string}
 func (articleApi *ArticleApi) CollectArticleView(c *gin.Context) {
 	_claims, _ := c.Get("claims")
 	claims := _claims.(*jwts.CustomClaims)
